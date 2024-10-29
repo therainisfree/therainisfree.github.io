@@ -14,13 +14,14 @@
     }
 
     .content-wrapper {
-      height: 100dvh; /* Use dynamic viewport height to handle iOS issues */
+      height: 100dvh; /* Ensure full height in both portrait and landscape */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 1rem;
       box-sizing: border-box;
+      transition: height 0.2s; /* Smooth transition on orientation change */
     }
 
     .subtitle {
@@ -58,10 +59,22 @@
   <title>Johnathan Truong</title>
 </head>
 <body>
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="content-wrapper">
     <a href="mailto:hello@johnathantruong.com" class="subtitle">
       hello@johnathantruong.com
     </a>
   </div>
+
+  <script>
+    // Adjust content height on orientation change or resize
+    function adjustHeight() {
+      const wrapper = document.getElementById('content-wrapper');
+      wrapper.style.height = `${window.innerHeight}px`;
+    }
+
+    // Run on load and on resize
+    window.addEventListener('load', adjustHeight);
+    window.addEventListener('resize', adjustHeight);
+  </script>
 </body>
 </html>
