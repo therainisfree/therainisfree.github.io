@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Interactive Disperse</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        #name {
+            font-family: Arial, sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem); /* Responsive font size */
+            letter-spacing: 0.2em;
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            line-height: 1;
+        }
+        .letter {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="name">
+        <span class="letter">J</span>
+        <span class="letter">o</span>
+        <span class="letter">h</span>
+        <span class="letter">n</span>
+        <span class="letter">a</span>
+        <span class="letter">t</span>
+        <span class="letter">h</span>
+        <span class="letter">a</span>
+        <span class="letter">n</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">T</span>
+        <span class="letter">r</span>
+        <span class="letter">u</span>
+        <span class="letter">o</span>
+        <span class="letter">n</span>
+        <span class="letter">g</span>
+    </div>
+
+    <script>
+        const letters = document.querySelectorAll('.letter');
+
+        let isTouching = false;
+
+        // Detect mouse or touch states
+        document.addEventListener('mousedown', () => (isTouching = true));
+        document.addEventListener('mouseup', () => (isTouching = false));
+        document.addEventListener('touchstart', () => (isTouching = true));
+        document.addEventListener('touchend', () => (isTouching = false));
+
+        // Add event listeners for both mouseover and touchmove
+        letters.forEach((letter) => {
+            letter.addEventListener('mouseover', (event) => {
+                if (!isTouching) disperseLetter(event.target);
+            });
+            letter.addEventListener('touchmove', (event) => {
+                const touch = event.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (element && element.classList.contains('letter')) disperseLetter(element);
+            });
+        });
+
+        function disperseLetter(letter) {
+            if (letter.style.opacity === '0') return; // Skip already dispersed letters
+
+            const randomX = (Math.random() - 0.5) * 500; // Random horizontal offset
+            const randomY = (Math.random() - 0.5) * 500; // Random vertical offset
+            const randomRotate = (Math.random() - 0.5) * 720; // Random rotation
+
+            letter.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+            letter.style.opacity = 0; // Fade out
+
+            // Reset the letter after 1.5 seconds
+            setTimeout(() => {
+                letter.style.transform = 'translate(0, 0) rotate(0deg)';
+                letter.style.opacity = 1; // Restore opacity
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
