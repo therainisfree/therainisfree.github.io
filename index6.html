@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjusted Touch Anywhere Interactive Disperse</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+            padding: 10px; /* Add padding to avoid edges */
+        }
+        #name {
+            font-family: Arial, sans-serif;
+            font-size: clamp(1.5rem, 6vw, 4rem); /* Adjusted font size for better responsiveness */
+            letter-spacing: 0.1em;
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            line-height: 1;
+            padding: 0 5vw; /* Add spacing from the edges */
+        }
+        .letter {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="name">
+        <span class="letter">J</span>
+        <span class="letter">o</span>
+        <span class="letter">h</span>
+        <span class="letter">n</span>
+        <span class="letter">a</span>
+        <span class="letter">t</span>
+        <span class="letter">h</span>
+        <span class="letter">a</span>
+        <span class="letter">n</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">T</span>
+        <span class="letter">r</span>
+        <span class="letter">u</span>
+        <span class="letter">o</span>
+        <span class="letter">n</span>
+        <span class="letter">g</span>
+    </div>
+
+    <script>
+        const letters = document.querySelectorAll('.letter');
+
+        let isTouching = false;
+
+        // Detect mouse or touch states
+        document.addEventListener('mousedown', () => (isTouching = true));
+        document.addEventListener('mouseup', () => (isTouching = false));
+        document.addEventListener('touchstart', () => (isTouching = true));
+        document.addEventListener('touchend', () => (isTouching = false));
+
+        // Handle touchmove and mousemove for dispersing letters
+        document.addEventListener('mousemove', disperseFromPointer);
+        document.addEventListener('touchmove', disperseFromPointer);
+
+        function disperseFromPointer(event) {
+            if (!isTouching && event.type !== 'mousemove') return;
+
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+            // Check if the pointer is over any letter
+            letters.forEach((letter) => {
+                const rect = letter.getBoundingClientRect();
+
+                if (
+                    clientX >= rect.left &&
+                    clientX <= rect.right &&
+                    clientY >= rect.top &&
+                    clientY <= rect.bottom &&
+                    letter.style.opacity !== '0' // Skip already dispersed letters
+                ) {
+                    disperseLetter(letter);
+                }
+            });
+        }
+
+        function disperseLetter(letter) {
+            const randomX = (Math.random() - 0.5) * 500; // Random horizontal offset
+            const randomY = (Math.random() - 0.5) * 500; // Random vertical offset
+            const randomRotate = (Math.random() - 0.5) * 720; // Random rotation
+
+            letter.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+            letter.style.opacity = 0; // Fade out
+
+            // Reset the letter after 1.5 seconds
+            setTimeout(() => {
+                letter.style.transform = 'translate(0, 0) rotate(0deg)';
+                letter.style.opacity = 1; // Restore opacity
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
