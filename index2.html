@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johnathan Truong</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        #name {
+            font-family: Arial, sans-serif;
+            font-size: 3rem;
+            letter-spacing: 5px;
+            position: relative;
+            display: flex;
+        }
+        .letter {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="name">
+        <span class="letter">J</span>
+        <span class="letter">o</span>
+        <span class="letter">h</span>
+        <span class="letter">n</span>
+        <span class="letter">a</span>
+        <span class="letter">t</span>
+        <span class="letter">h</span>
+        <span class="letter">a</span>
+        <span class="letter">n</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">T</span>
+        <span class="letter">r</span>
+        <span class="letter">u</span>
+        <span class="letter">o</span>
+        <span class="letter">n</span>
+        <span class="letter">g</span>
+    </div>
+
+    <script>
+        const letters = document.querySelectorAll('.letter');
+
+        // Add event listeners to each letter for hover or touch
+        letters.forEach((letter) => {
+            letter.addEventListener('mouseover', disperseLetter);
+            letter.addEventListener('touchstart', disperseLetter);
+        });
+
+        function disperseLetter(event) {
+            const letter = event.target; // Get the specific letter that was touched or hovered
+            const randomX = (Math.random() - 0.5) * 500; // Increased horizontal offset
+            const randomY = (Math.random() - 0.5) * 500; // Increased vertical offset
+            const randomRotate = (Math.random() - 0.5) * 720; // Random rotation for variety
+
+            letter.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+            letter.style.opacity = 0; // Fade out for added effect
+
+            // Reset the letter after a delay
+            setTimeout(() => {
+                letter.style.transform = 'translate(0, 0) rotate(0deg)';
+                letter.style.opacity = 1; // Restore opacity
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
